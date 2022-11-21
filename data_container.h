@@ -66,7 +66,7 @@ public:
 		return data_vec_.empty();
 	}
 
-	const DataType& operator[] (const int i)
+	const DataType& operator[] (const int i) const
 	{
 		return data_vec_[i];
 	}
@@ -79,7 +79,7 @@ private:
 //using ScanContainer = DataContainer<Eigen::Vector2f>;
 
 template<typename T>
-using ScanContainer = typename DataContainer<Eigen::Matrix<T, 2, 1>>;
+using ScanContainer = DataContainer<Eigen::Matrix<T, 2, 1>>;
 
 
 }

@@ -24,8 +24,12 @@ public:
 	}
 
 	const int extractEuclideanClusters( const sensor::ScanContainer<DataType>& scan_container,
-					    std::vector<std::vector<sensor::ScanContainer<DataType>::type>>& clusters )
+					    std::vector<std::vector<typename sensor::ScanContainer<DataType>::type>>& clusters )
 	{
+		if( scan_container.isEmpty() ){
+			return 0;
+		}		
+
 		int nn_start_idx = 0;
 		std::vector<bool> processed( scan_container.getSize(), false );
 		std::vector<int> nn_indices;
@@ -57,9 +61,9 @@ public:
 			}
 
 			if( seed_queue.size() > min_pts_per_cluster && seed_queue.size() < max_pts_per_cluster ){
-				std::vector<sensor::ScanContainer<DataType>::type> cluster;
+				std::vector<typename sensor::ScanContainer<DataType>::type> cluster;
 				for( int j = 0; j < seed_queue.size(); j ++ ){
-					sensor::ScanContainer<DataType>::type> pt = scan_container[seed_queue[j]];
+					typename sensor::ScanContainer<DataType>::type pt = scan_container.getIndexData( seed_queue[j] );//scan_container[seed_queue[j]];
 					cluster.push_back( pt );				
 				}
 				
@@ -75,10 +79,10 @@ public:
 				std::vector<int>& indices_vec )
 	{
 		int count = 0;
-		sensor::ScanContainer<DataType>::type curr_pt = scan_container[ curr_idx ];
+		typename sensor::ScanContainer<DataType>::type curr_pt = scan_container[ curr_idx ];
 
 		for( int i = 0; i < scan_container.getSize(); i ++ ){
-			sensor::ScanContainer<DataType>::type candidate_pt = scan_container[ i ];
+			typename sensor::ScanContainer<DataType>::type candidate_pt = scan_container[ i ];
 			if( i != curr_idx && ( curr_pt - candidate_pt ).norm() < min_radius ){
 				indices_vec.push_back( i );
 				count ++;
